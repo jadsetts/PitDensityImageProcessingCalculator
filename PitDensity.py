@@ -89,18 +89,14 @@ def pitsInImage(image, resizingScalar=1, threshold=100, imageSizeInmm2=10, RGBBi
     plt.xticks(())
     plt.yticks(())
 
-    if RGBBi == 'r' or RGBBi == 'g' or RGBBi == 'b': #This binarizes imageLoaded.
-        plt.figure()
-        plt.imshow(imageLoaded)
-        plt.title('Binarized & Maybe Inverted')
-        plt.xticks(())
-        plt.yticks(())
-    elif RGBBi == 'binary': #This binarizes RGBPlusArray.
-        plt.figure()
-        plt.imshow(RGBPlusArray)
-        plt.title('Binarized and Maybe Inverted')
-        plt.xticks(())
-        plt.yticks(())
+    plt.figure()
+    plt.imshow(binaryArray)
+    if flipBinaryOption == 1:
+        plt.title('Binarized & Flipped')
+    elif flipBinaryOption == 0:
+        plt.title('Binarized & Not Flipped')
+    plt.xticks(())
+    plt.yticks(())
 
     plt.figure()
     plt.imshow(labeled)
