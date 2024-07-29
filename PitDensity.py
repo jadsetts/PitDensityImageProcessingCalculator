@@ -1,5 +1,3 @@
-#Made entirely by Jonathan Ralph Adsetts, jadsetts2@gmail.com
-
 #This function will measure the pits in the image based on an initial image processing step.
 #This function requires some optimization and includes inherent subjectiveness.
 #For images with many pits, it saves time, for an image with <10 pits, it likely doesn't save time.
@@ -12,17 +10,26 @@ import pyclesperanto_prototype as cle
 import matplotlib.pyplot as plt
 
 def flipBinary(array):
-    returnThisArray=array
-    for index1,i in enumerate(array):
-        for index2,j in enumerate(i):
-            returnThisArray[index1,index2]=255-j[0]
-    return returnThisArray
+        returnThisArray=array
+        for index1,i in enumerate(array):
+            for index2,j in enumerate(i):
+                if RGBBi == 'r':
+                    returnThisArray[index1,index2]=255-j[0]
+                elif RGBBi == 'g':
+                    returnThisArray[index1,index2]=255-j[1]
+                elif RGBBi == 'b':
+                    returnThisArray[index1,index2]=255-j[2]
+                elif RGBBi == 'binary':
+                    returnThisArray[index1,index2]=255-j
+        return returnThisArray
 
-def pitsInImage(image, resizingScalar, threshold, imageSizeInmm2, RGBBi, flipBinaryOption):
+def pitsInImage(image, resizingScalar=1, threshold=100, imageSizeInmm2=10, RGBBi='binary', flipBinaryOption=0):
 
     #This prevents errors in the function.
     if resizingScalar < 1:
         return 'Cannot run function because \'resizingScalar\' is <1.'
+    if RGBBi != 'r' and RGBBi != 'g' and RGBBi != 'b' and RGBBi != 'binary':
+        return 'This function will not work.'
     #Resize the image based on resizingScalar
     image=Image.open(image)
     image2 = np.array(image.resize((int(image.size[0]/resizingScalar),int(image.size[1]/resizingScalar)), Image.Resampling.LANCZOS))
@@ -72,6 +79,7 @@ def pitsInImage(image, resizingScalar, threshold, imageSizeInmm2, RGBBi, flipBin
     #Labelling components
     cle.select_device("GTX")
     labeled = cle.connected_components_labeling_box(binaryArray)
+    
     num_labels = cle.maximum_of_all_pixels(labeled)
 
     #Showing the binary array, then the labelled components.
@@ -105,23 +113,3 @@ def pitsInImage(image, resizingScalar, threshold, imageSizeInmm2, RGBBi, flipBin
     elif num_labels > 0:
         return print('The number of objects in this image is '+str(int(num_labels-1))+'.\nThe pit density is '+str(round(((num_labels-1)/imageSizeInmm2),4))+' pits/mm.')
 
-
-
-
-#Calibrate the distance in images and provide size of image in millimeters squared.
-
-#You must continuously try co-ordinates that frame the scalebar perfectly (x1-x2,y1-y2).
-#You must also add the distance the iamges scale bar is (scaleBarDistance).
-#If you resize the photo for pit identification, you must redo this section.
-#Put scaleBarDistance in millimeters.
-#Most common image files are supported. List here: https://note.nkmk.me/en/python-opencv-imread-imwrite/
-
-def calibrateDistance(image,x1,x2,y1,y2,scaleBarDistance):
-
-    imageScalebar = cv2.imread(image)
-    plt.imshow(imageScalebar)
-    plt.xlim((x1,x2))
-    plt.ylim((y1,y2))
-    millimetersPerPixel=scaleBarDistance/(x2-x1)
-
-    return print('The scalebar is '+str(round(millimetersPerPixel,6))+' mm/pixel, and the image is '+str(round(imageScalebar.shape[0]*millimetersPerPixel*imageScalebar.shape[1]*millimetersPerPixel,6))+' mm\u00b2. \nThe image below should perfectly frame the x positions of the scalebar.')
