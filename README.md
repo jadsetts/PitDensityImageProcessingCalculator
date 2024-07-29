@@ -1,7 +1,6 @@
 # PitDensityImageProcessingCalculator
 
-![Picture2](https://github.com/user-attachments/assets/f2053edf-edbe-4dec-8423-aeeea205b15a)![Picture1 (2)](https://github.com/user-attachments/assets/9eada3a6-1e03-4b01-8e6e-4806f9f21641)
-
+![Picture2](https://github.com/user-attachments/assets/f2053edf-edbe-4dec-8423-aeeea205b15a)![Picture1](https://github.com/user-attachments/assets/3b1f3ed9-b414-4025-8884-a9e0783c951c)
 
 This repository is for calculating pit density (pits/mm2) from an image starting with the function 'pitsInImage'. This code is subjective and requires users to play around with the settings, but simplifies images that have many pits in them. This converts images to r, g, b or r+g+b co-ordinates, then binarizes the image based on a user-input threshold level, then can invert the binarized image color, and finally detects the number of pits. A second function (called 'calibrationDistance') finds the size of the image. Finally the pit density is calculated from the number of pits and the area.
 
