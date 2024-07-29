@@ -113,3 +113,22 @@ def pitsInImage(image, resizingScalar=1, threshold=100, imageSizeInmm2=10, RGBBi
     elif num_labels > 0:
         return print('The number of objects in this image is '+str(int(num_labels-1))+'.\nThe pit density is '+str(round(((num_labels-1)/imageSizeInmm2),4))+' pits/mm.')
 
+#Calibrate the distance in images and provide size of image in millimeters squared.
+
+#This is a trial and error function:
+#You must continuously try co-ordinates that frame the scalebar perfectly (x1-x2,y1-y2).
+#You must also add the distance the iamges scale bar is (scaleBarDistance).
+#If you resize the photo for pit identification, you must redo this section.
+#Put scaleBarDistance in millimeters.
+#Most common image files are supported. List here: https://note.nkmk.me/en/python-opencv-imread-imwrite/
+
+def calibrateDistance(image,x1,x2,y1,y2,scaleBarDistance):
+
+    imageScalebar = cv2.imread(image)
+    plt.figure()
+    plt.imshow(imageScalebar)
+    plt.xlim((x1,x2))
+    plt.ylim((y1,y2))
+    millimetersPerPixel=scaleBarDistance/(x2-x1)
+
+    return print('The scalebar is '+str(round(millimetersPerPixel,6))+' mm/pixel, and the image is '+str(round(imageScalebar.shape[0]*millimetersPerPixel*imageScalebar.shape[1]*millimetersPerPixel,6))+' mm\u00b2. \nThe image below should perfectly frame the x positions of the scalebar.')
