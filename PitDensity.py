@@ -24,7 +24,7 @@ def pitsInImage(image, resizingScalar, threshold, imageSizeInmm2, RGBBi, flipBin
     if resizingScalar < 1:
         return 'Cannot run function because \'resizingScalar\' is <1.'
     #Resize the image based on resizingScalar
-    image=Image.open(allFiles[thisFile])
+    image=Image.open(image)
     image2 = np.array(image.resize((int(image.size[0]/resizingScalar),int(image.size[1]/resizingScalar)), Image.Resampling.LANCZOS))
     
     #Load image and process it in 1 of 4 ways.
@@ -110,11 +110,6 @@ def pitsInImage(image, resizingScalar, threshold, imageSizeInmm2, RGBBi, flipBin
 
 #Calibrate the distance in images and provide size of image in millimeters squared.
 
-#These are all the libraries you need.
-import cv2
-import matplotlib.pyplot as plt
-
-#This is a trial and error function:
 #You must continuously try co-ordinates that frame the scalebar perfectly (x1-x2,y1-y2).
 #You must also add the distance the iamges scale bar is (scaleBarDistance).
 #If you resize the photo for pit identification, you must redo this section.
